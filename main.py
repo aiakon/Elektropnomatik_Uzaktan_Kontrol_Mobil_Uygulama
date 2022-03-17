@@ -21,6 +21,7 @@ class ExercisePage(Screen):
     def test(self):
         # link = self.manager.get_screen('mainpage')
         print(self.link)
+        print("new update")
         # a = requests.get(f'{link.ids.http.text}/gpio12On')
 
     def testt(self):
