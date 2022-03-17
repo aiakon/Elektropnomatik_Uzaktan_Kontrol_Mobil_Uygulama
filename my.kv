@@ -1,0 +1,37 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+ScreenManager:
+    transition: NoTransition()
+    MainPage:
+        name: 'mainpage'
+        FloatLayout:
+            TextInput:
+                id: http
+                text: ""
+                multiline: False
+                size_hint: 0.5,0.05
+                pos_hint: {"x": 0.3, "y": 0.8}
+            Button:
+                text:"Enter"
+                size_hint: 0.1,0.06
+                pos_hint: {"x": 0.82, "y": 0.795}
+                on_release:
+                    app.root.current = "exercisepage"  # this could also be just root.current = "exercisepage"
+    
+    ExercisePage:
+        id: escr
+        link: http.text  # link to the TextInput text
+        name: 'exercisepage'
+        FloatLayout:
+            Button:
+                text:"test"
+                size_hint: 0.5,0.075
+                pos_hint: {"x": 0.2, "top": 0.4}
+                on_release:
+                    escr.test()  # changed to use id
+            Button:
+                text:"test2"
+                size_hint: 0.5,0.075
+                pos_hint: {"x": 0.2, "top": 0.5}
+                on_release:
+                    escr.testt()  # changed to use id
