@@ -2,22 +2,16 @@
 # Yapılacaklar: global stopflag'i self.variable yap.
 
 from kivy.app import App
-from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.core.window import Window
-from kivy.uix.screenmanager import NoTransition
+from kivy.uix.screenmanager import Screen
 from kivy.uix.image import Image
 import cv2
 from kivy.graphics.texture import Texture
 from kivy.clock import Clock
-from kivy.uix.label import Label
 import requests
 import time
-import socket
 import threading
-from kivy.lang import builder
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty
 from datetime import datetime
-from kivy.uix.videoplayer import VideoPlayer
 
 
 class MainPage(Screen):
