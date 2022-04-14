@@ -7,34 +7,33 @@ from kivy.uix.image import Image
 import cv2
 from kivy.graphics.texture import Texture
 from kivy.clock import Clock
-import requests
-import time
 import threading
 from kivy.properties import StringProperty
-from datetime import datetime
+from kivy.core.window import Window
+import socket
 
 
 class MainPage(Screen):
-    pass
+    def start_tcp(self):
+        y = threading.Thread(target=self.tcp, daemon=True)  # Setup thread
+        y.start()  # Starts thread
+
+    def tcp(self):
+        global s
+        host = self.tcpip.text
+        port = int(self.port.text)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((host, port))
+            # s.sendall(b'Hello, world')
+            while True:
+                # s.sendall(b'Hello, world')
+                data = s.recv(1024)
+                datastr = data.decode("utf-8")
+                self.location_infotxt.text = self.location_infotxt.text + "\n" + datastr
 
 
 class ExercisePage(Screen):
-
-    def deney1(self):
-        global var
-        self.location_infotxt.text = "3 Defa İleri-Geri Döngüsü Yapan,\n" \
-                                     "İleri Gittiğinde 1sn Bekleyen Devre:\n"
-        var = 100
-
-    def deney2(self):
-        global var
-        self.location_infotxt.text = "İleri gittiğinde 1 Saniye,\n" \
-                                     "Geri geldiğinde 2 Saniye Bekleyen,\n" \
-                                     "Döngüye Beklemeden Başlayan Devre.\n"
-        var = 200
-
-    def on_leave(self, *args):
-        pass
+    pass
 
 
 class CamPage(Screen):
@@ -43,9 +42,11 @@ class CamPage(Screen):
 
     def on_pre_enter(self):
         global capture
-        self.capture = cv2.VideoCapture(f'{self.link}/stream')
+        print("1")
+        self.capture = cv2.VideoCapture(f'http://192.168.1.23:81/stream')
         self.my_camera = KivyCamera(capture=self.capture, fps=30)
         self.add_widget(self.my_camera)
+        print("2")
 
     def on_pre_leave(self):
         self.capture.release()
@@ -54,7 +55,16 @@ class CamPage(Screen):
 
 class ExercisePopUp(Screen):
     img_ico = StringProperty("./img/testico1.png")
-    var = 0
+
+    def on_enter(self, *args):
+        print(self.var)
+        if self.var == 100:
+            self.location_info.text = "3 Defa İleri-Geri Döngüsü Yapan,\n" \
+                                         "İleri Gittiğinde 1sn Bekleyen Devre:\n"
+        elif self.var == 200:
+            self.location_info.text = "İleri gittiğinde 1 Saniye,\n" \
+                                         "Geri geldiğinde 2 Saniye Bekleyen,\n" \
+                                         "Döngüye Beklemeden Başlayan Devre.\n"
 
     def testico(self):
         self.var += 1
@@ -64,87 +74,20 @@ class ExercisePopUp(Screen):
         else:
             self.my_ico1.source = './img/testico1.png'
 
-    def first_deney(self):
-        global stopflag
-
-        for x in range(0,3):
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            self.location_infotxt.text = self.location_infotxt.text + "\n\t\t\t\t\t\t" + f"{x+1}. döngü"
-            a = requests.get(f'{self.link}/gpio12On')  # Led1 is ON
-            self.location_infotxt.text = self.location_infotxt.text + "\n" + "1. Piston ileride\t\t" + dt_string
-            # print('acik')
-            for _ in range(0, 10):  # Stops working thread
-                time.sleep(0.1)  # time is adjustable
-                if stopflag:
-                    return
-            a = requests.get(f'{self.link}/gpio12Off')  # Led1 is OFF
-            a = requests.get(f'{self.link}/gpio13On')  # Led2 is ON
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            self.location_infotxt.text = self.location_infotxt.text + "\n" + "1. Piston geride\t\t" + dt_string
-            # print('kapali')
-            for _ in range(0, 2):  # Stops working thread
-                time.sleep(0.1)
-                if stopflag:
-                    return
-            a = requests.get(f'{self.link}/gpio13Off')  # Led2 is OFF
-        now = datetime.now()
-        dt_string = now.strftime("%H:%M:%S")
-        self.location_infotxt.text = self.location_infotxt.text + "\n" + "---> Döngü Tamamlandı." \
-                                                                           "\t\t" + dt_string + "\n"
-
-    def second_deney(self):
-        global stopflag
-        x = 0
-        while(1):
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            self.location_info.text = self.ids.location_info.text + "\n\t\t\t\t\t\t" + f"{x+1}. döngü"
-            a = requests.get('http://192.168.1.16:80/GPIO12ON')  # Led1 is ON
-            a = requests.get('http://192.168.1.16/GPIO12ON')
-            self.ids.location_info.text = self.ids.location_info.text + "\n" + "1. Piston ileride\t\t" + dt_string
-            # print('acik')
-            for _ in range(0, 10):  # Stops working thread
-                time.sleep(0.1)  # time is adjustable
-                if stopflag:
-                    return
-            a = requests.get('http://192.168.1.16:80/GPIO12OFF')  # Led1 is OFF
-            a = requests.get('http://192.168.1.16/GPIO12OFF')
-            a = requests.get('http://192.168.1.16:80/GPIO13ON')  # Led2 is ON
-            a = requests.get('http://192.168.1.16/GPIO13ON')
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            self.ids.location_info.text = self.ids.location_info.text + "\n" + "1. Piston geride\t\t" + dt_string
-            # print('kapali')
-            for _ in range(0, 20):  # Stops working thread
-                time.sleep(0.1)
-                if stopflag:
-                    return
-            a = requests.get('http://192.168.1.16:80/GPIO13OFF')  # Led2 is OFF
-            a = requests.get('http://192.168.1.16/GPIO13OFF')
-            now = datetime.now()
-            dt_string = now.strftime("%H:%M:%S")
-            x += 1
-
     def deneme(self):
-        global stopflag
+        global stopflag, s
         stopflag = False    # Stop flag for Thread
         pill2kill = threading.Event()
         if var == 100:
-            y = threading.Thread(target=self.first_deney, daemon=True)   # Setup thread
-            y.start()   # Starts thread
+            s.sendall(b'w')
         if var==200:
             y = threading.Thread(target=self.second_deney, daemon=True)  # Setup thread
             y.start()  # Starts thread
 
     def stopbutton(self):
-        global stopflag
-        stopflag = True
-        now = datetime.now()
-        dt_string = now.strftime("%H:%M:%S")
-        self.location_infotxt.text = self.location_infotxt.text + "\n" + "---> Döngü Durduruldu." \
-                                                                           "\t\t" + dt_string + "\n"
+        global stopflag, s
+        s.sendall(b'z')
+
         pass
     pass
 
@@ -153,49 +96,16 @@ class CircuitPage(Screen):
     img_src = StringProperty("./img/test100.png")
 
     def on_enter(self, *args):
-        global var
-        if var==100:
-            self.my_image1.source = './img/test100.png'
-        if var==200:
-            self.my_image1.source = './img/test200.png'
+        print(self.var)
+        self.my_image1.source = f'./img/test{self.var}.png'
 
-    def test(self):
-        global var
-        if var == 100:
-            self.manager.current = 'player'
-        if var == 200:
-            self.manager.current = 'player2'
-    pass
 
 
 class CircuitPage2(Screen):
     img2_src = StringProperty("./img/test100.png")
 
-    def on_enter(self, *args):
-        #global var       # Kontrol et
-        #var -=1
-        CircuitPage2.deneme(self)
-        '''global var
-        print(var)
-        if var==10:
-            self.ids.my_image.source = './img/test100.png'
-            self.ids.my_image.reload()
-        if var==20:
-            self.ids.my_image.source = './img/test200.png'
-            self.ids.my_image.reload()'''
-
     def deneme(self):
-        global var
-        var += 1
-
-        self.my_image2.source = f'./img/test{var}.png'
-
-        '''if var==11:
-            self.ids.my_image.source = './img/test101.png'
-            self.ids.my_image.reload()
-        if var==12:
-            self.ids.my_image.source = './img/test102.png'
-            self.ids.my_image.reload()'''
+        self.my_image2.source = f'./img/test{self.var}.png'
 
     def minus(self):
         global var, sm
@@ -209,10 +119,14 @@ class CircuitPage2(Screen):
 
 
 class Player(Screen):
+
+    def on_enter(self, *args):
+        print(self.var)
+        self.my_video.source = f'./img/vid{self.var}.mp4'
+        pass
+
     pass
 
-class Player2(Screen):
-    pass
 
 class PlcPage(Screen):
     pass
@@ -230,7 +144,7 @@ class KivyCamera(Image):
         if ret:
             # convert it to texture
             buf1 = cv2.flip(frame, 0)
-            buf = buf1.tostring()
+            buf = buf1.tobytes()
             image_texture = Texture.create(
                 size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
             image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
@@ -239,6 +153,7 @@ class KivyCamera(Image):
 
 
 class MyApp(App):
+    Window.size = (1280, 720)
     pass
 
 

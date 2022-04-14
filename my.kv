@@ -13,9 +13,14 @@
 ScreenManager:
     transition: NoTransition()
     id: screen_manager
+    var: 0
 
     MainPage:
         name: 'mainpage'
+        id: main
+        location_infotxt: location_info
+        tcpip: tcpip
+        port: port
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -25,20 +30,31 @@ ScreenManager:
 
         FloatLayout:
             Label:
-                text: "URL:"
+                text: "TCP/IP:"
                 font_size: 19
-                pos_hint: {"x": 0.2, "y": 0.775}
+                pos_hint: {"x": 0.2, "y": 0.8}
             TextInput:
-                id: http
+                id: tcpip
                 text: ""
                 multiline: False
-                size_hint: 0.5,0.05
+                size_hint: 0.5,0.1
                 pos_hint: {"x": 0.3, "y": 0.8}
+            Label:
+                text: "Port:"
+                font_size: 19
+                pos_hint: {"x": 0.2, "y": 0.7}
+            TextInput:
+                id: port
+                text: ""
+                multiline: False
+                size_hint: 0.5,0.1
+                pos_hint: {"x": 0.3, "y": 0.70}
             Button:
                 text:"Enter"
                 size_hint: 0.1,0.06
                 pos_hint: {"x": 0.82, "y": 0.795}
                 on_release:
+                    main.start_tcp()
                     app.root.current = "exercisepage"
 
             Button:
@@ -60,6 +76,7 @@ ScreenManager:
         name: 'exercisepage'
         id: excs
         location_infotxt: location_info
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -86,34 +103,48 @@ ScreenManager:
                 text:"DENEYLER"
                 font_size: 22
                 pos_hint: {"center_x": 0.5, "top": 0.9}
+        ScrollView:
+            size_hint_y: .73
+            pos_hint: {"x": 0, "y": .11}
+            do_scroll_x: False
+            do_scroll_y: True
 
-            Button:
-                text:"Deney 1"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.65}
-                on_release:
-                    excs.deney1()
-                    app.root.current = "popup"
+            GridLayout:
+                size: root.width, root.height
+                size_hint_x: None
+                size_hint_y: None
+                cols: 1
+                height: self.minimum_height
 
-            Button:
-                text:"Deney 2"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.54}
-                on_release:
-                    excs.deney2()
-                    app.root.current = "popup"
 
-            Button:
-                text:"Deney 3"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.43}
+                Button:
+                    text:"Deney 1"
+                    size_hint: 0.4,0.075
+                    pos_hint: {"x": 0.3, "top": 0.65}
+                    on_release:
+                        root.var = 100
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 2"
+                    size_hint: 0.4,0.075
+                    pos_hint: {"x": 0.3, "top": 0.54}
+                    on_release:
+                        root.var = 200
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 3"
+                    size_hint: 0.4,0.075
+                    pos_hint: {"x": 0.3, "top": 0.43}
+
 
 
     ExercisePopUp:
         name: 'popup'
         id: pop
-        location_infotxt: location_info
-        link: http.text
+        location_info: location_info
+        var: screen_manager.var
         my_ico1: my_ico1
         canvas.before:
             Color:
@@ -205,6 +236,7 @@ ScreenManager:
         name: 'circuit'
         id: circ
         my_image1: my_image1
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -241,7 +273,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
-                    circ.test()
+                    app.root.current = "player"
 
             Button:
                 text:"Önceki"
@@ -254,6 +286,7 @@ ScreenManager:
         name: 'circuit2'
         id: circ2
         my_image2: my_image2
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -295,6 +328,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
+                    root.var = root.var + 1
                     circ2.deneme()
 
             Button:
@@ -351,6 +385,8 @@ ScreenManager:
 
     Player:
         name: 'player'
+        var: screen_manager.var
+        my_video: my_video
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -368,57 +404,11 @@ ScreenManager:
                     Scatter:
                         id: scatter
                         pos: stencil4.pos
-                        size: my_video1.size
+                        size: my_video.size
                         VideoPlayer:
-                            id: my_video1
-                            source: "./img/vid1.mp4"
+                            id: my_video
+                            source: "./img/vid100.mp4"
                             size: stencil4.width, stencil4.height
-
-            Button:
-                text:"Geri"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0, "y": 0}
-                on_release:
-                    app.root.current = "popup"
-            Button:
-                text:"Sonraki"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0.8, "y": 0}
-                on_release:
-                    app.root.current = "circuit2"
-
-            Button:
-                text:"Önceki"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0.6, "y": 0}
-                on_release:
-                    app.root.current = "circuit"
-
-    Player2:
-        name: 'player2'
-        canvas.before:
-            Color:
-                rgba: (1, 1, 1, 1)
-            Rectangle:
-                pos:self.pos
-                size:self.size
-
-        FloatLayout:
-            GridLayout:
-                cols: 1
-                pos_hint: {"top": .895, "left": 1}
-                size_hint: 1, .795
-                StencilView:
-                    id: stencil5
-                    Scatter:
-                        id: scatter
-                        pos: stencil5.pos
-                        size: my_video2.size
-                        VideoPlayer:
-                            id: my_video2
-                            source: "./img/vid2.mp4"
-                            size: stencil5.width, stencil5.height
-
             Button:
                 text:"Geri"
                 size_hint: 0.2,0.075
@@ -442,7 +432,6 @@ ScreenManager:
     CamPage:
         name: 'campage'
         id: cam
-        link: http.text
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
