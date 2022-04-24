@@ -11,7 +11,7 @@ import threading
 from kivy.properties import StringProperty
 from kivy.core.window import Window
 import socket
-
+from os.path import exists
 
 class MainPage(Screen):
     def start_tcp(self):
@@ -78,9 +78,9 @@ class ExercisePopUp(Screen):
         global stopflag, s
         stopflag = False    # Stop flag for Thread
         pill2kill = threading.Event()
-        if var == 100:
-            s.sendall(b'w')
-        if var==200:
+        if self.var == 100:
+            s.sendall(b'm')
+        if self.var==200:
             y = threading.Thread(target=self.second_deney, daemon=True)  # Setup thread
             y.start()  # Starts thread
 
@@ -104,17 +104,13 @@ class CircuitPage(Screen):
 class CircuitPage2(Screen):
     img2_src = StringProperty("./img/test100.png")
 
-    def deneme(self):
-        self.my_image2.source = f'./img/test{self.var}.png'
+    def image_source(self):
+        if exists(f"./img/test{self.var}.png"):
+            self.my_image2.source = f'./img/test{self.var}.png'
+        elif not exists(f"./img/test{self.var}.png"):
+            self.var = 3500
 
-    def minus(self):
-        global var, sm
-        var -= 1
-        if (var%10) == 0:
-            self.manager.current = 'player'
-        else:
-            var -= 1
-            CircuitPage2.deneme(self)
+
     pass
 
 
