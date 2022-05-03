@@ -13,9 +13,14 @@
 ScreenManager:
     transition: NoTransition()
     id: screen_manager
+    var: 0
 
     MainPage:
         name: 'mainpage'
+        id: main
+        location_infotxt: location_info
+        tcpip: tcpip
+        port: port
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -25,20 +30,31 @@ ScreenManager:
 
         FloatLayout:
             Label:
-                text: "URL:"
+                text: "TCP/IP:"
                 font_size: 19
-                pos_hint: {"x": 0.2, "y": 0.775}
+                pos_hint: {"x": 0.2, "y": 0.8}
             TextInput:
-                id: http
+                id: tcpip
                 text: ""
                 multiline: False
-                size_hint: 0.5,0.05
+                size_hint: 0.5,0.1
                 pos_hint: {"x": 0.3, "y": 0.8}
+            Label:
+                text: "Port:"
+                font_size: 19
+                pos_hint: {"x": 0.2, "y": 0.7}
+            TextInput:
+                id: port
+                text: ""
+                multiline: False
+                size_hint: 0.5,0.1
+                pos_hint: {"x": 0.3, "y": 0.70}
             Button:
                 text:"Enter"
                 size_hint: 0.1,0.06
                 pos_hint: {"x": 0.82, "y": 0.795}
                 on_release:
+                    main.start_tcp()
                     app.root.current = "exercisepage"
 
             Button:
@@ -52,13 +68,15 @@ ScreenManager:
                 size_hint: 0.4,0.4
                 pos_hint: {"x": 0.55, "y": 0.2}
                 on_release:
-                    app.root.current = "campage"
+                    main.deneme()
 
 
 
     ExercisePage:
         name: 'exercisepage'
         id: excs
+        location_infotxt: location_info
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -82,35 +100,194 @@ ScreenManager:
                     app.root.current = "campage"
 
             Label:
-                text:"DENEYLER"
+                text:"[b]DENEYLER[/b]"
                 font_size: 22
-                pos_hint: {"center_x": 0.5, "top": 0.9}
+                markup: True
+                pos_hint: {"center_x": 0.5, "top": 0.95}
+        ScrollView:
+            size_hint_y: .73
+            pos_hint: {"x": 0, "y": .11}
+            do_scroll_x: False
+            do_scroll_y: True
 
-            Button:
-                text:"Deney 1"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.65}
-                on_release:
-                    excs.deney1()
-                    app.root.current = "popup"
+            GridLayout:
+                size: root.width, root.height
+                size_hint_x: None
+                size_hint_y: None
+                cols: 1
+                height: self.minimum_height
+                row_default_height: 180
+                row_force_default: True
 
-            Button:
-                text:"Deney 2"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.54}
-                on_release:
-                    excs.deney2()
-                    app.root.current = "popup"
+                Button:
+                    text:"Deney 1"
+                    on_release:
+                        root.var = 100
+                        app.root.current = "popup"
 
-            Button:
-                text:"Deney 3"
-                size_hint: 0.4,0.075
-                pos_hint: {"x": 0.3, "top": 0.43}
+                Button:
+                    text:"Deney 2"
+                    on_release:
+                        root.var = 200
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 3:       [ A+, A- ]\nİleri-Geri Döngüsü Yapan 1 Pistonlu Kumanda Devresi"
+                    on_release:
+                        root.var = 300
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 4:       [ A+, 3sn, A- ]\nİleri Gidip, 3 saniye Bekleyip Geri Dönen 1 Pistonlu Kumanda Devresi"
+                    on_release:
+                        root.var = 400
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 5:       [ A+, 3sn, A-, 4sn ]\nİleri Gidip, 3 saniye Bekleyip, Geri döndüğünde 4 saniye bekleyen \n1 Pistonlu Kumanda Devresi"
+                    on_release:
+                        root.var = 500
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 6       [ 3 x (A+, A-) ] 3 Defa İleri-Geri Döngüsü Yapan Kumanda Devresi"
+                    on_release:
+                        root.var = 600
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 7       [ {3 x (A+, A-)}, A+, 3sn, A- ] 3 Defa İleri-Geri Döngüsünü tamamladıktan sonra, İleri gidip 3 saniye bekleyip geri dönen Kumanda Devresi"
+                    on_release:
+                        root.var = 700
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 8       [ {3 x (A+, A-)}, A+, 3sn, A-, 4sn ] 3 Defa İleri-Geri Döngüsünü tamamladıktan sonra, İleri gidip 3 saniye bekleyip geri döndükten sonra 4 saniye bekleyen Kumanda Devresi"
+                    on_release:
+                        root.var = 800
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 9       [A+B+, A-B-] İki pistonun aynı anda ileri geri döngüsünü sağlayan kumanda devresi"
+                    on_release:
+                        root.var = 900
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 10      [A+B-, A-B+] Bir piston ileri giderken diğer pistonun geri döndüğü iki pistonlu kumanda devresi"
+                    on_release:
+                        root.var = 1000
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 11      [A+, A-][B+, 3sn, B-] Bir piston ileri geri döngüsündeyken diğer pistonun ileri gidip 3 saniye bekleyip geri dönmesini sağlayan kumanda devresi."
+                    on_release:
+                        root.var = 1100
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 12      [A+, A-][B+, 3sn, B-, 4sn] Bir piston ileri geri döngüsündeyken diğer pistonun İleri gidip 3 saniye bekleyip geri geldikten sonra 4 saniye beklemesini sağlayan kumanda devresi"
+                    on_release:
+                        root.var = 1200
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 13      [A+, 3sn, A-][B+, 2sn, B-] İlk piston ileri gidip 3 saniye bekleyip geri dönmesini sağlayan, ikinci pistonun ise ileri gidip 2 saniye bekleyip geri dönmesini sağlayan kumanda devresi."
+                    on_release:
+                        root.var = 1300
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 14      [A+, 3sn, A-][B+, B-, 3sn] İlk piston ileri gittiğinde 3 saniye bekleyip geri dönmesini sağlayan, ikinci pistonun ise ileri gidip geri döndükten sonra 3 saniye beklemesini sağlayan kumanda devresi."
+                    on_release:
+                        root.var = 1400
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 15"
+                    on_release:
+                        root.var = 1500
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 16"
+                    on_release:
+                        root.var = 1600
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 17"
+                    on_release:
+                        root.var = 1700
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 18"
+                    on_release:
+                        root.var = 1800
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 19"
+                    on_release:
+                        root.var = 1900
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 20"
+                    on_release:
+                        root.var = 2000
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 21"
+                    on_release:
+                        root.var = 2100
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 22"
+                    on_release:
+                        root.var = 2200
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 23"
+                    on_release:
+                        root.var = 2300
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 24"
+                    on_release:
+                        root.var = 2400
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 25"
+                    on_release:
+                        root.var = 2500
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 26"
+                    on_release:
+                        root.var = 2600
+                        app.root.current = "popup"
+
+                Button:
+                    text:"Deney 27"
+                    on_release:
+                        root.var = 2700
+                        app.root.current = "popup"
+
 
 
     ExercisePopUp:
         name: 'popup'
         id: pop
+        location_info: location_info
+        var: screen_manager.var
         my_ico1: my_ico1
         canvas.before:
             Color:
@@ -132,6 +309,7 @@ ScreenManager:
                 size_hint: 0.35,0.075
                 pos_hint: {"x": 0.1, "top": 0.8}
                 on_release:
+                    root.var = root.var + 50
                     app.root.current = "plc"
 
             Button:
@@ -146,7 +324,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.175, "top": 0.5}
                 on_release:
-                    pop.deneme()
+                    pop.send_data()
 
             Button:
                 text:"Durdur"
@@ -188,6 +366,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "exercisepage"
 
             Button:
@@ -201,7 +380,8 @@ ScreenManager:
     CircuitPage:
         name: 'circuit'
         id: circ
-        my_image: my_image
+        my_image1: my_image1
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -215,30 +395,31 @@ ScreenManager:
                 pos_hint: {"top": .895, "left": 1}
                 size_hint: 1, .795
                 StencilView:
-                    id: stencil
+                    id: stencil1
                     Scatter:
                         id: scatter
-                        pos: stencil.pos
-                        size: my_image.size
+                        pos: stencil1.pos
+                        size: my_image1.size
                         Image:
-                            id: my_image
+                            id: my_image1
                             source: circ.img_src
                             allow_stretch: True
                             keep_ratio: True
-                            size: stencil.width, stencil.height
+                            size: stencil1.width, stencil1.height
 
             Button:
                 text:"Geri"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
-                    circ.test()
+                    app.root.current = "player"
 
             Button:
                 text:"Önceki"
@@ -248,8 +429,12 @@ ScreenManager:
 
 
     CircuitPage2:
+        on_enter: print(root.var)
         name: 'circuit2'
         id: circ2
+        my_image2: my_image2
+        var: screen_manager.var
+        txt_input: txt_input
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -261,47 +446,65 @@ ScreenManager:
             GridLayout:
                 cols: 1
                 pos_hint: {"top": .895, "x": 0}
-                size_hint: 0.7, .795
+                size_hint: 0.6, .795
                 StencilView:
-                    id: stencil
+                    id: stencil2
                     Scatter:
                         id: scatter
-                        pos: stencil.pos
-                        size: my_image.size
+                        pos: stencil2.pos
+                        size: my_image2.size
                         Image:
-                            id: my_image
+                            id: my_image2
                             source: circ2.img2_src
                             allow_stretch: True
                             keep_ratio: True
-                            size: stencil.width, stencil.height
+                            size: stencil2.width, stencil2.height
+            ScrollView:
+                id: scrlv
+                size_hint: 0.4, .82
+                pos_hint: {"top": .895, "x": 0.6}
+                TextInput:
+                    id: txt_input
+                    multiline: True
+                    disabled: True
+                    text: "•	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner."
+                    size_hint: 1, None
+                    height: max( (len(self._lines)+1) * self.line_height, scrlv.height)
 
-            TextInput:
-                text:"Bu bölüme dair açıklama."
-                pos_hint: {"top": .895, "x": 0.7}
-                size_hint: 0.3, .82
 
             Button:
                 text:"Geri"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "player"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
-                    circ2.deneme()
+                    root.var = root.var + 1
+                    circ2.check_file()
+                    if circ2.file_exists == False: root.var = root.var - 1
+                    circ2.image_source()
+                    print(root.var)
 
             Button:
                 text:"Önceki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.6, "y": 0}
                 on_release:
-                    circ2.minus()
+                    root.var = root.var - 1
+                    if root.var%100 == 0: app.root.current = "player"
+                    circ2.image_source()
+                    print(root.var)
 
     PlcPage:
         name: 'plc'
+        id: plc
+        my_image3: my_image3
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -315,37 +518,50 @@ ScreenManager:
                 pos_hint: {"top": .895, "left": 1}
                 size_hint: 1, .795
                 StencilView:
-                    id: stencil
+                    id: stencil3
                     Scatter:
                         id: scatter
-                        pos: stencil.pos
-                        size: my_image.size
+                        pos: stencil3.pos
+                        size: my_image3.size
                         Image:
-                            id: my_image
+                            id: my_image3
                             source: './img/PLC.png'
                             allow_stretch: True
                             keep_ratio: True
-                            size: stencil.width, stencil.height
+                            size: stencil3.width, stencil3.height
 
             Button:
                 text:"Geri"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
+                on_release:
+                    root.var = root.var + 1
+                    plc.check_file()
+                    if plc.file_exists == False: root.var = root.var - 1
+                    plc.image_source()
+
 
             Button:
                 text:"Önceki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.6, "y": 0}
+                on_release:
+                    root.var = root.var - 1
+                    if root.var%100 == 49: root.var = root.var + 1
+                    plc.image_source()
 
 
     Player:
         name: 'player'
+        var: screen_manager.var
+        my_video: my_video
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -359,72 +575,28 @@ ScreenManager:
                 pos_hint: {"top": .895, "left": 1}
                 size_hint: 1, .795
                 StencilView:
-                    id: stencil
+                    id: stencil4
                     Scatter:
                         id: scatter
-                        pos: stencil.pos
+                        pos: stencil4.pos
                         size: my_video.size
                         VideoPlayer:
                             id: my_video
-                            source: "./img/vid1.mp4"
-                            size: stencil.width, stencil.height
-
+                            source: "./img/vid100.mp4"
+                            size: stencil4.width, stencil4.height
             Button:
                 text:"Geri"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
-                    app.root.current = "circuit2"
-
-            Button:
-                text:"Önceki"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0.6, "y": 0}
-                on_release:
-                    app.root.current = "circuit"
-
-    Player2:
-        name: 'player2'
-        canvas.before:
-            Color:
-                rgba: (1, 1, 1, 1)
-            Rectangle:
-                pos:self.pos
-                size:self.size
-
-        FloatLayout:
-            GridLayout:
-                cols: 1
-                pos_hint: {"top": .895, "left": 1}
-                size_hint: 1, .795
-                StencilView:
-                    id: stencil
-                    Scatter:
-                        id: scatter
-                        pos: stencil.pos
-                        size: my_video.size
-                        VideoPlayer:
-                            id: my_video
-                            source: "./img/vid2.mp4"
-                            size: stencil.width, stencil.height
-
-            Button:
-                text:"Geri"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0, "y": 0}
-                on_release:
-                    app.root.current = "popup"
-            Button:
-                text:"Sonraki"
-                size_hint: 0.2,0.075
-                pos_hint: {"x": 0.8, "y": 0}
-                on_release:
+                    root.var = root.var + 1
                     app.root.current = "circuit2"
 
             Button:
@@ -437,7 +609,6 @@ ScreenManager:
     CamPage:
         name: 'campage'
         id: cam
-        link: http.text
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -455,6 +626,7 @@ ScreenManager:
                 size_hint: 0.333,0.075
                 pos_hint: {"x": 0, "top": 0.075}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Deney"
@@ -468,3 +640,6 @@ ScreenManager:
                 pos_hint: {"x": 0.666, "top": 0.075}
                 on_release:
                     app.root.current = "campage"
+
+
+

@@ -66,14 +66,16 @@ class CamPage(Screen):
 class ExercisePopUp(Screen):
     img_ico = StringProperty("./img/testico1.png")
 
-    def on_enter(self, *args):
-        if self.var == 100:
-            self.location_info.text = "3 Defa İleri-Geri Döngüsü Yapan,\n" \
-                                      "İleri Gittiğinde 1sn Bekleyen Devre:\n"
-        elif self.var == 200:
-            self.location_info.text = "İleri gittiğinde 1 Saniye,\n" \
-                                      "Geri geldiğinde 2 Saniye Bekleyen,\n" \
-                                      "Döngüye Beklemeden Başlayan Devre.\n"
+    def exercise_name(self):
+        text = open("exercise_name.txt", "r", encoding="utf-8").read().split('&')
+        if text[int(self.var//100) - 1][0] == "\n":
+            exercise_name = text[int(self.var // 100) - 1].replace(text[int(self.var//100) - 1][0], "")
+        else:
+            exercise_name = text[int(self.var//100) - 1]
+        if '\\n' in exercise_name:
+            exercise_name = exercise_name.split('\\n')
+            exercise_name = "\n".join(exercise_name)
+        self.location_info.text = exercise_name
 
     def testico(self):
         self.var += 1
