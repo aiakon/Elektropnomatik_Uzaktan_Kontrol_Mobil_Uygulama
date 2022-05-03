@@ -94,11 +94,14 @@ class ExercisePopUp(Screen):
             # if self.var == 100:
             #     s.sendall(b'w')
         except Exception as e:
-            print("pass")
+            print("Not Connected.")
 
     def stopbutton(self):
         global stopflag, s
-        s.sendall(b'z')
+        try:
+            s.sendall(b'z')
+        except Exception as e:
+            print("Not Connected.")
 
         pass
 
