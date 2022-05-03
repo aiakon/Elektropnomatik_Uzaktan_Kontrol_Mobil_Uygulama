@@ -47,3 +47,14 @@
 •	Bu sırada Z0 zaman rölesi 3 saniye bekleme süresini doldurur ve Z0 anahtarı tetiklenerek kapalı konuma geçer bu sayede YV1 valf selenoidi aktifleşerek pistonun ileri hareketini sağlar.&
 •	1. Piston ileri konuma geldiğinde S2 sınır anahtarı tetiklenerek kapalı konuma geçer ve YV1 valf selenoidi aktifleşerek pistonun geriye dönmesini sağlar.&
 •	Bu deneyde iki pistonda kullanılan zaman rölelerinin farklı bir örneğini inceleyeceğiz.&
+•	Öncelikle START butonuna basarak K0 rölesinin mühürlenmesini sağlanır ve K0 anahtarı kapalı konuma geçer bu sayede sistem çalışmaya başlar. 1. Piston S1 konumunda olduğu için S1 sınır anahtarı tetiklenerek Z0 zaman rölesinin çalışmasını sağlar.\n\n•	2. Piston başlangıç konumunda olduğu için S3 sınır anahtarı tetiklenerek kapalı konuma geçer ve YV2 valf selenoidini aktifleştirerek doğrudan ileri hareketine başlar.&
+•	2. Piston ileri konumdayken S4 sınır anahtarını tetikleyerek Z1 zaman rölesinin çalışmasını sağlar.\n\n•	Z0 zaman rölesinde belirlenen süre geçtiğinde Z0 anahtarı tetiklenerek kapalı konuma geçerek YV0 valf selenoidini aktifleştirerek pistonun ileri hareketini sağlar. &
+•	Z1 zaman rölesinde belirlenen süre geçtiğinde Z1 anahtarı tetiklenerek YV3 valf selenoidini tetikleyerek pistonun geri dönmesini sağlar.&
+•	1. Piston ileri konumdayken S2 sınır anahtarını tetikleyerek S2 anahtarını kapalı konuma geçirir ve YV1 valf selenoidi aktifleşerek pistonun geri hareketini sağlar.\n\n•	Bu sayede pistonlar farklı konumlarda bekleme yaparak ileri geri döngülerini yapmış olurlar.&
+•	Bu deneyde iki pistonunda bekleme yaparak ileri geri döngülerini yapmalarını sağlayan kumanda devresini inceleyeceğiz.&
+•	Öncelikle START butonuna basarak K0 rölesinin mühürlenmesini sağlanır ve K0 anahtarı kapalı konuma geçer bu sayede sistem çalışmaya başlar. İki pistonda başlangıç konumlarındayken S1 ve S3 anahtarlarını tetikleyerek kapalı konuma geçmelerini sağlarlar ve bu sayede Z0 ile Z2 zaman rölelerinin çalışmalarını sağlarlar.&
+•	Z0 zaman rölesinin bekleme süresi dolduktan sonra Z0 anahtarı tetiklenerek kapalı konuma geçer ve bu sayede YV0 valf selenoidi aktifleşerek pistonun ileri hareketini sağlar.&
+•	Ardından 1. Piston ileri konumuna gelerek S2 sınır anahtarının tetiklenmesini sağlar ve anahtar kapalı konuma geçerek Z1 zaman rölesinin çalışmasını sağlar.&
+•	Z2 zaman rölesinin bekleme süresi dolduktan sonra Z2 anahtarı tetiklenerek kapalı konuma geçer ve bu sayede YV2 valf selenoidi aktifleşerek pistonun ileri hareketini sağlar.&
+•	Z1 zaman rölesinin bekleme süresi dolduktan sonra Z1 anahtarı tetiklenerek kapalı konuma geçer ve bu sayede YV1 valf selenoidi aktifleşerek 1. Pistonun geri dönmesini sağlar.&
+•	Son olarak Z3 zaman rölesinin bekleme süresi dolduktan sonra Z3 anahtarı tetiklenerek kapalı konuma geçer ve bu sayede YV3 valf selenoidi aktifleşerek 2. Pistonun geri dönmesini sağlar.&
