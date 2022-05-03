@@ -8,28 +8,34 @@ import cv2
 from kivy.graphics.texture import Texture
 from kivy.clock import Clock
 import threading
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, BooleanProperty
 from kivy.core.window import Window
 import socket
 from os.path import exists
 
+
 class MainPage(Screen):
-    def start_tcp(self):
+
+    def start_tcp(self, *args):
         y = threading.Thread(target=self.tcp, daemon=True)  # Setup thread
         y.start()  # Starts thread
 
     def tcp(self):
-        global s
-        host = self.tcpip.text
-        port = int(self.port.text)
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((host, port))
-            # s.sendall(b'Hello, world')
-            while True:
+        try:
+            global s
+            host = self.tcpip.text
+            port = int(self.port.text)
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect((host, port))
                 # s.sendall(b'Hello, world')
-                data = s.recv(1024)
-                datastr = data.decode("utf-8")
-                self.location_infotxt.text = self.location_infotxt.text + "\n" + datastr
+                while True:
+                    # s.sendall(b'Hello, world')
+                    data = s.recv(1024)
+                    datastr = data.decode("utf-8")
+                    self.location_infotxt.text = self.location_infotxt.text + "\n" + datastr
+        except Exception as e:
+            Clock.schedule_once(self.start_tcp, 0.01)
+            print("Reconnecting", e)
 
 
 class ExercisePage(Screen):
@@ -50,6 +56,7 @@ class CamPage(Screen):
 
     def on_pre_leave(self):
         self.capture.release()
+
     pass
 
 
@@ -57,38 +64,39 @@ class ExercisePopUp(Screen):
     img_ico = StringProperty("./img/testico1.png")
 
     def on_enter(self, *args):
-        print(self.var)
         if self.var == 100:
             self.location_info.text = "3 Defa İleri-Geri Döngüsü Yapan,\n" \
-                                         "İleri Gittiğinde 1sn Bekleyen Devre:\n"
+                                      "İleri Gittiğinde 1sn Bekleyen Devre:\n"
         elif self.var == 200:
             self.location_info.text = "İleri gittiğinde 1 Saniye,\n" \
-                                         "Geri geldiğinde 2 Saniye Bekleyen,\n" \
-                                         "Döngüye Beklemeden Başlayan Devre.\n"
+                                      "Geri geldiğinde 2 Saniye Bekleyen,\n" \
+                                      "Döngüye Beklemeden Başlayan Devre.\n"
 
     def testico(self):
         self.var += 1
-        if self.var%2 == 1:
+        if self.var % 2 == 1:
             self.my_ico1.source = './img/testico2.png'
 
         else:
             self.my_ico1.source = './img/testico1.png'
 
-    def deneme(self):
-        global stopflag, s
-        stopflag = False    # Stop flag for Thread
-        pill2kill = threading.Event()
-        if self.var == 100:
-            s.sendall(b'm')
-        if self.var==200:
-            y = threading.Thread(target=self.second_deney, daemon=True)  # Setup thread
-            y.start()  # Starts thread
+    def send_data(self):
+        global s
+        try:
+            data_container = ["q", "Q", "w", "W", "e", "E", "r", "R", "t", "T", "y", "Y", "p", "P", "a", "A", "s", "S",
+                              "d", "D", "f", "F", "g", "G", "h"]
+            s.sendall(bytes(data_container[int(self.var / 100) - 1], 'ascii'))
+            # if self.var == 100:
+            #     s.sendall(b'w')
+        except Exception as e:
+            print("pass")
 
     def stopbutton(self):
         global stopflag, s
         s.sendall(b'z')
 
         pass
+
     pass
 
 
@@ -96,20 +104,28 @@ class CircuitPage(Screen):
     img_src = StringProperty("./img/100.png")
 
     def on_enter(self, *args):
-        print(self.var)
         self.my_image1.source = f'./img/{self.var}.png'
 
 
-
 class CircuitPage2(Screen):
-    img2_src = StringProperty("./img/test100.png")
+    img2_src = StringProperty("./img/100.png")
+    file_exists = BooleanProperty(True)
+
+    def on_enter(self, *args):
+        self.image_source()
+
+    def check_file(self):
+        if exists(f"./img/{self.var}.png"):
+            self.file_exists = True
+        elif not exists(f"./img/{self.var}.png"):
+            self.file_exists = False
 
     def image_source(self):
-        if exists(f"./img/test{self.var}.png"):
+        self.check_file()
+        if self.file_exists is True:
             self.my_image2.source = f'./img/{self.var}.png'
-        elif not exists(f"./img/test{self.var}.png"):
-            self.var = 3500
-
+        elif self.file_exists is False:
+            pass
 
     pass
 
@@ -117,7 +133,6 @@ class CircuitPage2(Screen):
 class Player(Screen):
 
     def on_enter(self, *args):
-        print(self.var)
         self.my_video.source = f'./img/{self.var}.mp4'
         pass
 
@@ -125,6 +140,24 @@ class Player(Screen):
 
 
 class PlcPage(Screen):
+    file_exists = BooleanProperty(True)
+
+    def on_enter(self, *args):
+        self.image_source()
+
+    def check_file(self):
+        if exists(f"./img/{self.var}.png"):
+            self.file_exists = True
+        elif not exists(f"./img/{self.var}.png"):
+            self.file_exists = False
+
+    def image_source(self):
+        self.check_file()
+        if self.file_exists is True:
+            self.my_image3.source = f'./img/{self.var}.png'
+        elif self.file_exists is False:
+            pass
+
     pass
 
 

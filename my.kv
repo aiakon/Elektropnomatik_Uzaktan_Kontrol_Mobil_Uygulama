@@ -68,7 +68,7 @@ ScreenManager:
                 size_hint: 0.4,0.4
                 pos_hint: {"x": 0.55, "y": 0.2}
                 on_release:
-                    app.root.current = "campage"
+                    main.deneme()
 
 
 
@@ -100,9 +100,10 @@ ScreenManager:
                     app.root.current = "campage"
 
             Label:
-                text:"DENEYLER"
+                text:"[b]DENEYLER[/b]"
                 font_size: 22
-                pos_hint: {"center_x": 0.5, "top": 0.9}
+                markup: True
+                pos_hint: {"center_x": 0.5, "top": 0.95}
         ScrollView:
             size_hint_y: .73
             pos_hint: {"x": 0, "y": .11}
@@ -131,19 +132,19 @@ ScreenManager:
                         app.root.current = "popup"
 
                 Button:
-                    text:"Deney 3"
+                    text:"Deney 3:       [ A+, A- ]\nİleri-Geri Döngüsü Yapan 1 Pistonlu Kumanda Devresi"
                     on_release:
                         root.var = 300
                         app.root.current = "popup"
 
                 Button:
-                    text:"Deney 4"
+                    text:"Deney 4:       [ A+, 3sn, A- ]\nİleri Gidip, 3 saniye Bekleyip Geri Dönen 1 Pistonlu Kumanda Devresi"
                     on_release:
                         root.var = 400
                         app.root.current = "popup"
 
                 Button:
-                    text:"Deney 5"
+                    text:"Deney 5:       [ A+, 3sn, A-, 4sn ]\nİleri Gidip, 3 saniye Bekleyip, Geri döndüğünde 4 saniye bekleyen \n1 Pistonlu Kumanda Devresi"
                     on_release:
                         root.var = 500
                         app.root.current = "popup"
@@ -268,18 +269,6 @@ ScreenManager:
                         root.var = 2500
                         app.root.current = "popup"
 
-                Button:
-                    text:"Deney 26"
-                    on_release:
-                        root.var = 2600
-                        app.root.current = "popup"
-
-                Button:
-                    text:"Deney 27"
-                    on_release:
-                        root.var = 2700
-                        app.root.current = "popup"
-
 
 
     ExercisePopUp:
@@ -308,6 +297,7 @@ ScreenManager:
                 size_hint: 0.35,0.075
                 pos_hint: {"x": 0.1, "top": 0.8}
                 on_release:
+                    root.var = root.var + 50
                     app.root.current = "plc"
 
             Button:
@@ -322,7 +312,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.175, "top": 0.5}
                 on_release:
-                    pop.deneme()
+                    pop.send_data()
 
             Button:
                 text:"Durdur"
@@ -364,6 +354,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "exercisepage"
 
             Button:
@@ -389,8 +380,8 @@ ScreenManager:
         FloatLayout:
             GridLayout:
                 cols: 1
-                pos_hint: {"top": .995, "left": 1}
-                size_hint: 1, .895
+                pos_hint: {"top": .895, "left": 1}
+                size_hint: 1, .795
                 StencilView:
                     id: stencil1
                     Scatter:
@@ -409,6 +400,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
@@ -439,8 +431,8 @@ ScreenManager:
         FloatLayout:
             GridLayout:
                 cols: 1
-                pos_hint: {"top": .995, "x": 0}
-                size_hint: 0.7, .895
+                pos_hint: {"top": .895, "x": 0}
+                size_hint: 0.7, .795
                 StencilView:
                     id: stencil2
                     Scatter:
@@ -464,6 +456,7 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "player"
             Button:
                 text:"Sonraki"
@@ -471,6 +464,8 @@ ScreenManager:
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
                     root.var = root.var + 1
+                    circ2.check_file()
+                    if circ2.file_exists == False: root.var = root.var - 1
                     circ2.image_source()
                     print(root.var)
 
@@ -480,13 +475,15 @@ ScreenManager:
                 pos_hint: {"x": 0.6, "y": 0}
                 on_release:
                     root.var = root.var - 1
-                    if root.var%100 == 99: app.root.current = "player"
-                    if root.var%100 == 99: root.var = root.var + 1
+                    if root.var%100 == 0: app.root.current = "player"
                     circ2.image_source()
+                    print(root.var)
 
     PlcPage:
         name: 'plc'
+        id: plc
         my_image3: my_image3
+        var: screen_manager.var
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -497,8 +494,8 @@ ScreenManager:
         FloatLayout:
             GridLayout:
                 cols: 1
-                pos_hint: {"top": .995, "left": 1}
-                size_hint: 1, .895
+                pos_hint: {"top": .895, "left": 1}
+                size_hint: 1, .795
                 StencilView:
                     id: stencil3
                     Scatter:
@@ -517,16 +514,27 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
+                on_release:
+                    root.var = root.var + 1
+                    plc.check_file()
+                    if plc.file_exists == False: root.var = root.var - 1
+                    plc.image_source()
+
 
             Button:
                 text:"Önceki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.6, "y": 0}
+                on_release:
+                    root.var = root.var - 1
+                    if root.var%100 == 49: root.var = root.var + 1
+                    plc.image_source()
 
 
     Player:
@@ -543,8 +551,8 @@ ScreenManager:
         FloatLayout:
             GridLayout:
                 cols: 1
-                pos_hint: {"top": .995, "left": 1}
-                size_hint: 1, .895
+                pos_hint: {"top": .895, "left": 1}
+                size_hint: 1, .795
                 StencilView:
                     id: stencil4
                     Scatter:
@@ -560,12 +568,14 @@ ScreenManager:
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0, "y": 0}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Sonraki"
                 size_hint: 0.2,0.075
                 pos_hint: {"x": 0.8, "y": 0}
                 on_release:
+                    root.var = root.var + 1
                     app.root.current = "circuit2"
 
             Button:
@@ -595,6 +605,7 @@ ScreenManager:
                 size_hint: 0.333,0.075
                 pos_hint: {"x": 0, "top": 0.075}
                 on_release:
+                    root.var = (root.var//100)*100
                     app.root.current = "popup"
             Button:
                 text:"Deney"
