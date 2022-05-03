@@ -119,7 +119,7 @@ class CircuitPage2(Screen):
 
     def check_file(self):
         photos = [101, 201, 301, 401, 402, 403, 501, 502, 503, 504, 505, 601, 602, 603, 701, 702, 703, 704, 705,
-                  801, 802, 803, 804, 805, 806, 901, 902, 903]
+                  801, 802, 803, 804, 805, 806, 901, 902, 903, 1001, 1002, 1003, 1004, 1101, 1102, 1103, 1104]
         if exists(f"./img/{self.var}.png"):
             if self.var % 10 != 0 and self.var in photos:
                 text = open("aciklama.txt", "r", encoding="utf-8").read().split('&')  # Read .txt file
