@@ -20,14 +20,38 @@ description = ["•	START Butonuna basıldığında K0 Rölesi aktive olur ve ke
                "konumda olsa dahi +24V kaynaktan gelen akım K0 anahtarı üzerinden akarak rölenin sürekli aktif "
                "konumda kalmasını sağlar. Bu duruma rölenin mühürlenmesi adı verilir. Röleyi tekrardan kapatmak "
                "için STOP butonuna basılması gereklidir. \n\n•	NO (Normally Open) Anahtar: Normal konumunda yani "
-               "enerjilendirilmediği durumda açık konumda olan anahtara denir.",
+               "enerjilendirilmediği durumda açık konumda olan anahtara denir.",    # 1.Deney [0]
+
                "•	Devre şemasının sağ tarafında görülen piston devresinde yukarıdan aşağıya saymak gerekirse, 1 "
                "adet çift etkili silindir piston, pistonun altında 5/2 selenoid valf, valfin altında bakım ünitesi ve"
                " onun altında da basınçlı hava kaynağı bulunmaktadır.\n\n•	Bu deneyde START butonuna basıldığında K0"
                " anahtarının kapandığını, YV0 valf selenoidine enerji gittiğini ve dolayısıyla pistonun ileri gittiğini"
                " görmekteyiz. Piston geri konumuna dönmemektedir çünkü pistona bağlı selenoid valfin sağdan kumandasını"
                " kontrol etmemekteyiz. Bir sonraki deneyde pistonu hem ileri hem de geri şekilde kontrol etmeyi "
-               "göreceğiz."
+               "göreceğiz.",        # 2.Deney [1]
+
+               "•	Bu deneyde sınır anahtarlarının kullanımını ve pistonu iki yönlü bir şekilde kontrol etmeyi "
+               "öğreneceğiz. Pistonun üzerinde gördüğünüz S1 ve S2 yazıları sınır anahtarlarının sensörleridir. Piston"
+               " bu konuma geldiğinde sınır anahtarı NC ise açık konuma, NO ise kapalı konuma geçer.\n\n•	Devrede "
+               "görüldüğü üzere piston S1 konumundayken S1 anahtarı kapalı konuma geçerek YV0 valf selenoidinin "
+               "aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde ise S2 anahtarı "
+               "kapalı konuma geçerek YV1 valf selenoidinin aktifleşmesini sağlayarak pistonun geri gitmesini sağlar. "
+               "STOP butonuna basıncaya kadar bu çalışma döngüsü devam eder.",      # 3.Deney [2]
+
+               "•	Bu deneyde zaman rölelerini inceleyeceğiz. Kumanda devresinde gördüğünüz Z0 ismiyle bulunan sembol"
+               " zaman rölesinin sembolüdür. Zaman röleleri enerjilendirildikten belirli bir süre sonra anahtarlarının"
+               " konumunu değiştiren rölelere denir.\n•	Öncelikle START butonuna basıldığında K0 rölesi "
+               "mühürlenmektedir ve K0 anahtarı kapalı konumda olacağından dolayı sistem çalışmaya başlayacaktır. İlk"
+               " olarak piston S1 konumunda olacağı için S1 anahtarı kapalı konumda olacak ve YV0 valf selenoidi "
+               "aktifleşerek pistonu ileri hareket ettirecektir. Ardından piston S2 konumuna geldiğinde S2 anahtarı "
+               "kapanacak ve Z0 zaman rölesine elektrik enerjisi göndererek çalışmaya başlamasını sağlayacaktır.",
+               "Zaman rölesi belirlenen süre olan 0.5 saniye bekledikten sonra Z0 anahtarını kapalı konuma geçirerek "
+               "YV1 valf selenoidinin aktifleşmesini sağlayarak pistonun geri dönmesini sağlayacaktır. Bu sayede piston"
+               " ileri gidip 3 saniye bekleyip geri dönme döngüsünü yapmış olacaktır. STOP butonuna basılmadığı sürece"
+               " piston bu döngüde çalışmaya devam eder.",      # 4.Deney [3,4]
+
+               ""
+
                ]
 class MainPage(Screen):
 
@@ -135,6 +159,12 @@ class CircuitPage2(Screen):
                 self.txt_input.text = description[0]
             if self.var == 201:
                 self.txt_input.text = description[1]
+            if self.var == 301:
+                self.txt_input.text = description[2]
+            if self.var == 401:
+                self.txt_input.text = description[3]
+            if self.var == 402:
+                self.txt_input.text = description[4]
             self.file_exists = True
         elif not exists(f"./img/{self.var}.png"):
             self.file_exists = False
