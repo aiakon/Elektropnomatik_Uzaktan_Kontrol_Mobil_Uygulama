@@ -50,7 +50,63 @@ description = ["•	START Butonuna basıldığında K0 Rölesi aktive olur ve ke
                " ileri gidip 3 saniye bekleyip geri dönme döngüsünü yapmış olacaktır. STOP butonuna basılmadığı sürece"
                " piston bu döngüde çalışmaya devam eder.",      # 4.Deney [3,4]
 
-               ""
+               "•	Bu deneyde pistonun hem ileri giderken hem de geri dönerken beklemesini sağlayan kumanda devresini "
+               "inceleyeceğiz.\n\n•	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 "
+               "anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 "
+               "konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek"
+               " çalışmasını sağlar.",
+               "Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna "
+               "geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2"
+               " konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek"
+               " çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna "
+               "geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner.",        # 5.Deney [5,6]
+
+               "•	Bu deneyde sayıcı röleleri inceleyeceğiz. Devre şematiğinde gördüğümüz C0 ismine sahip sembol "
+               "sayıcı rölenin sembolüdür. Röledeki A1 ve A2 pinleri sayılması istenen sinyalin giriş ve çıkışlarıdır."
+               " R1 ve R2 pinleri ise sayıcı rölenin reset pinlerinin giriş ve çıkışlarıdır. A1 pinine her sinyal "
+               "geldiğinde sayıcı röle bunu algılayarak saymaya başlar ve rölenin ayarlandığı sayıya ulaşınca sayıcı "
+               "röleye bağlı olan anahtarın konumunu değiştirir. Reset pini olan R1 pinine bir sinyal gelmediği sürece"
+               " sayıcı röle bulunduğu konumda kalmaya devam eder.",
+               "•	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı "
+               "konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için"
+               " S1 anahtarı kapalı konumda olur ve YV0 selenoid valfinin aktifleşmesini sağlar bu sayede piston ileri "
+               "gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve hem YV1 selenoid valfi"
+               " aktifleşerek geri dönmesi sağlanır hem de C1 sayıcı rölesine sinyal giderek rölenin sayması sağlanır."
+               " Sayıcı röle 3 kere sinyal saydığında C1 kapalı anahtarını açık konumuna getirerek YV0’ın "
+               "aktifleşmesini engeller bu sayede döndü durdurulmuş olunur. Bu deney setinde C1 sayıcı rölesi "
+               "resetlenmediği için döngüyü baştan başlatmak için sistemi baştan başlatmak gerekir. Bu durumu ileriki "
+               "deneylerde göreceğiz.",      # 6.Deney [7,8]
+
+               "•	Bu deneyde zaman ve sayıcı rölelerinin birlikte kullanımını inceleyeceğiz. Bir önceki deneyde "
+               "anlattığımız üzere sayıcı rölelerin resetlenmesi için R1 pinine bir sinyal göndermemiz gerekli. Bu pine"
+               " göndereceğimiz sinyal zaman rölesinin anahtarından geçmekte.\n\n•	Öncelikle START butonuna basılarak "
+               "K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar."
+               " Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve YV0 "
+               "selenoid valfinin aktifleşmesini sağlar bu sayede piston ileri gitmeye başlar.",
+               "Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve hem YV1 selenoid valfi aktifleşerek "
+               "geri dönmesi sağlanır hem de C1 sayıcı rölesine sinyal giderek rölenin sayması sağlanır. Sayıcı röle"
+               " 3 kere sinyal saydığında C1 kapalı anahtarını açık konumuna getirerek YV0’ın aktifleşmesini bir süre"
+               " engeller ve aynı süre boyunca C1 açık anahtarını da kapalı konuma getirerek Z0 zaman "
+               "rölesinin çalışmasını sağlar. Zaman rölesinde belirlenen süre tamamlandıktan sonra Z0 zaman rölesinin "
+               "anahtarı kapalı konuma geçerek C1 sayıcı rölesinin sıfırlanmasını sağlar ve bu "
+               "sayede döngü tamamlanmış olur.",      # 7.Deney [9,10]
+
+               "•	Bu deneyde sayıcı röleyi START butonu ile sıfırlamayı ve sayıcı röle ile zaman rölesinin "
+               "farklı bir kullanımını öğreneceğiz.\n\n•	Öncelikle START butonuna basılarak K0 rölesinin "
+               "mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston, "
+               "başlangıç konumu olarak S1 konumunda olduğu için başlangıçta S1 anahtarı kapalı konumdadır ve "
+               "dolayısıyla Z0 zaman rölesi çalışmaya başlar. Zaman rölesinde belirlenen süre dolduğunda Z0 anahtarı "
+               "tetiklenerek kapalı konuma geçer ve YV0 valf selenoidinin aktifleştirerek pistonun ileriye hareket "
+               "etmesini sağlar. Piston S2 konumuna geldiğinde S2 anahtarı tetiklenerek kapalı konuma geçer ve Z1 zaman"
+               " rölesinin çalışmasını sağlar.  ",
+               "Z1 zaman rölesi belirlenen süre kadar bekledikten sonra Z1 anahtarını tetikleyerek kapalı "
+               "konuma geçirir ve YV1 valf selenoidinin aktifleştirerek pistonun geriye dönmesini sağlar. Piston "
+               "geriye dönerken aynı zamanda sayıcı röleye bir sinyal göndererek ileri-geri döngüsünü 1 kere "
+               "tamamladığını bildirir. Sistem 3 defa ileri-geri döngüsünü yaptıktan sonra sayıcı röle kendisine "
+               "bağlı olan C1 kapalı anahtarını açık konuma getirir ve sistemin gücünü sağlayan K0’ın mührünü "
+               "kırarak sistemi kapatmış olur. Sistemin baştan çalışmasını sağlamak için START butonuna tekrar basılır"
+               " bu sayede hem C1 sayıcı rölesine reset sinyali gitmiş olur hem de K0 rölesinin mühürlenmesi "
+               "sağlanarak sistemin çalışması sağlanır.",      # 8.Deney [11,12]
 
                ]
 class MainPage(Screen):
@@ -165,6 +221,22 @@ class CircuitPage2(Screen):
                 self.txt_input.text = description[3]
             if self.var == 402:
                 self.txt_input.text = description[4]
+            if self.var == 501:
+                self.txt_input.text = description[5]
+            if self.var == 502:
+                self.txt_input.text = description[6]
+            if self.var == 601:
+                self.txt_input.text = description[7]
+            if self.var == 602:
+                self.txt_input.text = description[8]
+            if self.var == 701:
+                self.txt_input.text = description[9]
+            if self.var == 702:
+                self.txt_input.text = description[10]
+            if self.var == 801:
+                self.txt_input.text = description[11]
+            if self.var == 802:
+                self.txt_input.text = description[12]
             self.file_exists = True
         elif not exists(f"./img/{self.var}.png"):
             self.file_exists = False
