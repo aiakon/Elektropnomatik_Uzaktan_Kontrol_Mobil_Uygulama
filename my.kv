@@ -421,6 +421,7 @@ ScreenManager:
         id: circ2
         my_image2: my_image2
         var: screen_manager.var
+        txt_input: txt_input
         canvas.before:
             Color:
                 rgba: (1, 1, 1, 1)
@@ -447,7 +448,8 @@ ScreenManager:
                             size: stencil2.width, stencil2.height
 
             TextInput:
-                text:"START Butonuna basıldığında K0 Rölesi aktive olur ve kendisine bağlı K0 NO anahtarını kapalı konumuna getirir. START butonu ile K0 anahtarı paralel olarak bağlandığı için START butonu açık konumda olsa dahi +24V kaynaktan gelen akım K0 anahtarı üzerinden akarak rölenin sürekli aktif konumda kalmasını sağlar. Bu duruma rölenin mühürlenmesi adı verilir. Röleyi tekrardan kapatmak için STOP butonuna basılması gereklidir."
+                id: txt_input
+                text: "test"
                 pos_hint: {"top": .895, "x": 0.6}
                 size_hint: 0.4, .82
 

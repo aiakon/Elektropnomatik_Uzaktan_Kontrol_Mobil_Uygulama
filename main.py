@@ -15,7 +15,20 @@ from kivy.core.window import Window
 import socket
 from os.path import exists
 
-
+description = ["•	START Butonuna basıldığında K0 Rölesi aktive olur ve kendisine bağlı K0 NO anahtarını kapalı "
+               "konumuna getirir. START butonu ile K0 anahtarı paralel olarak bağlandığı için START butonu açık "
+               "konumda olsa dahi +24V kaynaktan gelen akım K0 anahtarı üzerinden akarak rölenin sürekli aktif "
+               "konumda kalmasını sağlar. Bu duruma rölenin mühürlenmesi adı verilir. Röleyi tekrardan kapatmak "
+               "için STOP butonuna basılması gereklidir. \n\n•	NO (Normally Open) Anahtar: Normal konumunda yani "
+               "enerjilendirilmediği durumda açık konumda olan anahtara denir.",
+               "•	Devre şemasının sağ tarafında görülen piston devresinde yukarıdan aşağıya saymak gerekirse, 1 "
+               "adet çift etkili silindir piston, pistonun altında 5/2 selenoid valf, valfin altında bakım ünitesi ve"
+               " onun altında da basınçlı hava kaynağı bulunmaktadır.\n\n•	Bu deneyde START butonuna basıldığında K0"
+               " anahtarının kapandığını, YV0 valf selenoidine enerji gittiğini ve dolayısıyla pistonun ileri gittiğini"
+               " görmekteyiz. Piston geri konumuna dönmemektedir çünkü pistona bağlı selenoid valfin sağdan kumandasını"
+               " kontrol etmemekteyiz. Bir sonraki deneyde pistonu hem ileri hem de geri şekilde kontrol etmeyi "
+               "göreceğiz."
+               ]
 class MainPage(Screen):
 
     def start_tcp(self, *args):
@@ -118,6 +131,10 @@ class CircuitPage2(Screen):
 
     def check_file(self):
         if exists(f"./img/{self.var}.png"):
+            if self.var == 101:
+                self.txt_input.text = description[0]
+            if self.var == 201:
+                self.txt_input.text = description[1]
             self.file_exists = True
         elif not exists(f"./img/{self.var}.png"):
             self.file_exists = False
