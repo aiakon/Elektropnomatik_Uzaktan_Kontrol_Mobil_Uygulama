@@ -446,12 +446,18 @@ ScreenManager:
                             allow_stretch: True
                             keep_ratio: True
                             size: stencil2.width, stencil2.height
-
-            TextInput:
-                id: txt_input
-                text: "test"
-                pos_hint: {"top": .895, "x": 0.6}
+            ScrollView:
+                id: scrlv
                 size_hint: 0.4, .82
+                pos_hint: {"top": .895, "x": 0.6}
+                TextInput:
+                    id: txt_input
+                    multiline: True
+                    disabled: True
+                    text: "•	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner. •	Öncelikle START butonuna basılarak K0 rölesinin mühürlenmesi sağlanır ve K0 anahtarı kapalı konuma geçtiği için sistem çalışmaya başlar. Piston başlangıç konumu olarak S1 konumunda olduğu için S1 anahtarı kapalı konumda olur ve Z0 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z0 zaman rölesi 0.8 saniye bekledikten sonra Z0 anahtarını kapalı konumuna geçirerek YV0 valf selenoidinin aktifleşmesini sağlar ve piston ileri gitmeye başlar. Piston S2 konumuna geldiğinde S2 anahtarı kapalı konuma geçer ve Z1 zaman rölesine elektrik enerjisini ileterek çalışmasını sağlar. Z1 zaman rölesi 0.6 saniye bekledikten sonra Z1 anahtarını kapalı konumuna geçirerek YV1 valf selenoidinin aktifleşmesini sağlar ve piston geri döner."
+                    size_hint: 1, None
+                    height: max( (len(self._lines)+1) * self.line_height, scrlv.height)
+
 
             Button:
                 text:"Geri"
