@@ -93,11 +93,11 @@ class ExercisePopUp(Screen):
 
 
 class CircuitPage(Screen):
-    img_src = StringProperty("./img/test100.png")
+    img_src = StringProperty("./img/100.png")
 
     def on_enter(self, *args):
         print(self.var)
-        self.my_image1.source = f'./img/test{self.var}.png'
+        self.my_image1.source = f'./img/{self.var}.png'
 
 
 
@@ -106,7 +106,7 @@ class CircuitPage2(Screen):
 
     def image_source(self):
         if exists(f"./img/test{self.var}.png"):
-            self.my_image2.source = f'./img/test{self.var}.png'
+            self.my_image2.source = f'./img/{self.var}.png'
         elif not exists(f"./img/test{self.var}.png"):
             self.var = 3500
 
@@ -118,7 +118,7 @@ class Player(Screen):
 
     def on_enter(self, *args):
         print(self.var)
-        self.my_video.source = f'./img/vid{self.var}.mp4'
+        self.my_video.source = f'./img/{self.var}.mp4'
         pass
 
     pass
