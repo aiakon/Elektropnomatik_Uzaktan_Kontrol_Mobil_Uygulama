@@ -9,7 +9,7 @@
     max:100
 <Button>
     size_hint:0.26,0.1
-    # color: 1, 1, 1, 1
+    color: 1, 1, 1, 1
 
 ScreenManager:
     transition: NoTransition()
@@ -183,73 +183,73 @@ ScreenManager:
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 3:       [ A+, A- ]\nİleri-Geri Döngüsü Yapan 1 Pistonlu Kumanda Devresi"
+                        text:"Deney 3"
                         on_release:
                             root.var = 300
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 4:       [ A+, 3sn, A- ]\nİleri Gidip, 3 saniye Bekleyip Geri Dönen 1 Pistonlu Kumanda Devresi"
+                        text:"Deney 4"
                         on_release:
                             root.var = 400
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 5:       [ A+, 3sn, A-, 4sn ]\nİleri Gidip, 3 saniye Bekleyip, Geri döndüğünde 4 saniye bekleyen \n1 Pistonlu Kumanda Devresi"
+                        text:"Deney 5"
                         on_release:
                             root.var = 500
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 6       [ 3 x (A+, A-) ] 3 Defa İleri-Geri Döngüsü Yapan Kumanda Devresi"
+                        text:"Deney 6"
                         on_release:
                             root.var = 600
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 7\n[ {3 x (A+, A-)}, A+, 3sn, A- ]"
+                        text:"Deney 7"
                         on_release:
                             root.var = 700
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 8\n[ {3 x (A+, A-)}, A+, 3sn, A-, 4sn ]"
+                        text:"Deney 8"
                         on_release:
                             root.var = 800
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 9       [A+B+, A-B-] İki pistonun aynı anda ileri geri döngüsünü sağlayan kumanda devresi"
+                        text:"Deney 9"
                         on_release:
                             root.var = 900
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 10      [A+B-, A-B+] Bir piston ileri giderken diğer pistonun geri döndüğü iki pistonlu kumanda devresi"
+                        text:"Deney 10"
                         on_release:
                             root.var = 1000
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 11      [A+, A-][B+, 3sn, B-] Bir piston ileri geri döngüsündeyken diğer pistonun ileri gidip 3 saniye bekleyip geri dönmesini sağlayan kumanda devresi."
+                        text:"Deney 11"
                         on_release:
                             root.var = 1100
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 12\n[A+, A-][B+, 3sn, B-, 4sn]"
+                        text:"Deney 12"
                         on_release:
                             root.var = 1200
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 13      [A+, 3sn, A-][B+, 2sn, B-] İlk piston ileri gidip 3 saniye bekleyip geri dönmesini sağlayan, ikinci pistonun ise ileri gidip 2 saniye bekleyip geri dönmesini sağlayan kumanda devresi."
+                        text:"Deney 13"
                         on_release:
                             root.var = 1300
                             pop.exercise_name()
 
                     Button:
-                        text:"Deney 14      [A+, 3sn, A-][B+, B-, 3sn] İlk piston ileri gittiğinde 3 saniye bekleyip geri dönmesini sağlayan, ikinci pistonun ise ileri gidip geri döndükten sonra 3 saniye beklemesini sağlayan kumanda devresi."
+                        text:"Deney 14"
                         on_release:
                             root.var = 1400
                             pop.exercise_name()
@@ -569,41 +569,3 @@ ScreenManager:
                 pos_hint: {"x": 0.6, "y": 0}
                 on_release:
                     app.root.current = "circuit"
-
-    CamPage:
-        name: 'campage'
-        id: cam
-        canvas.before:
-            Color:
-                rgba: (1, 1, 1, 1)
-            Rectangle:
-                pos:self.pos
-                size:self.size
-        FloatLayout:
-
-            Label:
-                text: " "
-                font_size: 19
-                pos_hint: {"x": 0.2, "top": 0.725}
-            Button:
-                text:"Geri"
-                size_hint: 0.333,0.075
-                pos_hint: {"x": 0, "top": 0.075}
-                on_release:
-                    root.var = (root.var//100)*100
-                    app.root.current = "popup"
-            Button:
-                text:"Deney"
-                size_hint: 0.333,0.075
-                pos_hint: {"x": 0.333, "top": 0.075}
-                on_release:
-                    app.root.current = "exercisepage"
-            Button:
-                text:"Kamera"
-                size_hint: 0.333,0.075
-                pos_hint: {"x": 0.666, "top": 0.075}
-                on_release:
-                    app.root.current = "campage"
-
-
-
